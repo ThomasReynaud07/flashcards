@@ -1,0 +1,19 @@
+{
+  "repoUrl": "https://github.com/ThomasReynaud07/flashcards",
+  "projectName": "Flashcards",
+  "branch": "main",
+  "me": "ThomasReynaud07",
+  "journalStartDate": null,
+  "exceptions": [
+    {
+      "id": "16441f91-d69b-4a4b-9544-82f1f3968d77",
+      "type": "commitless",
+      "name": "(learn):Introduction au module",
+      "description": "Le prof nous à introduis au module et au framework adonisJS",
+      "date": "2026-01-14T14:36",
+      "duration": 120,
+      "status": "Done",
+      "author": "ThomasReynaud07"
+    }
+  ]
+}
