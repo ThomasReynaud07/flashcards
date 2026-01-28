@@ -22,8 +22,8 @@
       "url": "https://github.com/ThomasReynaud07/flashcards/commit/3ade5cbc3aefeda84147aa69819e3925c3348587",
       "name": "(Doc):Create Jdt",
       "description": "J'avais un problèmes avec le Jdt, rien ne marchais.",
-      "date": "2026-01-14T14:07:00.000Z",
-      "duration": 46,
+      "date": "2026-01-14T15:07",
+      "duration": 31,
       "status": "Done",
       "author": "ThomasReynaud07",
       "patch": true
@@ -53,6 +53,16 @@
       "status": "Done",
       "author": "ThomasReynaud07",
       "patch": true
+    },
+    {
+      "id": "262c145d-d545-410a-8152-34aadf75e478",
+      "type": "commitless",
+      "name": "Absence",
+      "description": "",
+      "date": "2026-01-21T12:25:00.000Z",
+      "duration": 225,
+      "status": "Done",
+      "author": "ThomasReynaud07"
     }
   ]
 }
