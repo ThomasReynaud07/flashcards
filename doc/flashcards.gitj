@@ -27,6 +27,32 @@
       "status": "Done",
       "author": "ThomasReynaud07",
       "patch": true
+    },
+    {
+      "id": "9a16203e-6502-403b-8b93-4968e8ed77ac",
+      "type": "commitpatch",
+      "sha": "b9625c1f32ae511cb282f86ab988ee18579d854d",
+      "url": "https://github.com/ThomasReynaud07/flashcards/commit/b9625c1f32ae511cb282f86ab988ee18579d854d",
+      "name": "(feat):Step1 Terminer",
+      "description": "Je ne comprenais pas vraiment où mettre les fichiers, et la doc était un peu flou",
+      "date": "2026-01-14T15:27:00.000Z",
+      "duration": 63,
+      "status": "Done",
+      "author": "ThomasReynaud07",
+      "patch": true
+    },
+    {
+      "id": "bbdc9341-08af-468a-81ea-9cde5191f706",
+      "type": "commitpatch",
+      "sha": "5fc4728470e24a2a567bc861c206ed3dc3c19afb",
+      "url": "https://github.com/ThomasReynaud07/flashcards/commit/5fc4728470e24a2a567bc861c206ed3dc3c19afb",
+      "name": "(chore):Initialize the app teachers folder",
+      "description": "",
+      "date": "2026-01-14T14:23:00.000Z",
+      "duration": 4,
+      "status": "Done",
+      "author": "ThomasReynaud07",
+      "patch": true
     }
   ]
 }
