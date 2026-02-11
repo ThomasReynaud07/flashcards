@@ -1,58 +1,46 @@
-@component('layouts/main', { title: 'Mes Decks' })
-  <header class="main-header">
-    <div>
+@layout('components/layout', { title: 'Mes Decks' })
+  @slot('main')
+    <header class="main-header">
       <h1>
         Mes decks
       </h1>
-      <p class="subtitle">
+      <p>
         Gérez vos collections de cartes.
       </p>
-    </div>
-    <a href="/decks/create" class="btn-create">+ Créer un deck</a>
-  </header>
+      <a href="/decks/create" class="btn-create">+ Créer un deck</a>
+    </header>
 
-  <div class="glass-card">
-    <table class="deck-table">
-      <thead>
-        <tr>
-          <th>
-            Titre
-          </th>
-          <th>
-            Description
-          </th>
-          <th class="text-center">
-            Volume
-          </th>
-          <th>
-          </th>
-        </tr>
-      </thead>
-      <tbody>
-        @each(deck in decks)
-          <tr class="row-hover" onclick="window.location='/decks/{{ deck.id }}'">
-            <td>
-              <div class="deck-title-cell">
-                <div class="deck-icon">
-                  #
-                </div>
-                <span class="deck-link">{{ deck.title }}</span>
-              </div>
-            </td>
-            <td>
-              <p class="deck-desc">
-                {{ deck.description }}
-              </p>
-            </td>
-            <td class="text-center">
-              <span class="badge">{{ deck.$extras.flashcards_count || 0 }} cartes</span>
-            </td>
-            <td class="text-right action-link">
-              Voir →
-            </td>
+    <div class="glass-card">
+      <table class="deck-table">
+        <thead>
+          <tr>
+            <th>
+              Titre
+            </th>
+            <th>
+              Description
+            </th>
+            <th class="text-center">
+              Volume
+            </th>
           </tr>
-        @endeach
-      </tbody>
-    </table>
-  </div>
+        </thead>
+        <tbody>
+          @each(deck in decks)
+            <tr class="row-hover" onclick="window.location='/decks/{{ deck.id }}'">
+              <td>
+                {{ deck.title }}
+              </td>
+              <td>
+                {{ deck.description }}
+              </td>
+              <td class="text-center">
+                {{ deck.$extras.flashcards_count || 0 }} cartes
+              </td>
+            </tr>
+          @endeach
+        </tbody>
+      </table>
+    </div>
+  @end
 @end

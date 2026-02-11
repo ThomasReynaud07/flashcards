@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="fr">
+<html>
   <head>
     <meta charset="utf-8" />
     <title>
@@ -8,14 +8,14 @@
     @vite(['resources/css/app.css', 'resources/js/app.js'])
   </head>
   <body>
-    @!component('components/header')
+    {{-- On va chercher le header dans ton dossier Partials --}}
+    @include('Partials/header')
 
     <main class="container">
-      {{{ body }}}
-      {{-- On utilise une variable simple ici --}}
+      {{{ await $slots.main() }}}
     </main>
 
-    <footer style="text-align: center; color: #94a3b8; margin-top: 4rem;">
+    <footer style="text-align: center; margin-top: 2rem;">
       <small>© 2026 FlashyCards</small>
     </footer>
   </body>
