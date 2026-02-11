@@ -1,0 +1,73 @@
+@layout('components/layout', { title: 'Créer un nouveau Deck' })
+  @slot('main')
+    <div class="form-container">
+      <header class="form-header">
+        <a href="/" class="btn-back">
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            width="20"
+            height="20"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+          >
+            <path d="m15 18-6-6 6-6" />
+          </svg>
+          Retour
+    </a>
+        <h1>
+          Nouveau Deck
+        </h1>
+        <p class="subtitle">
+          Créez une collection pour commencer à apprendre.
+        </p>
+      </header>
+
+      <div class="glass-card form-card">
+        <form action="{{ route('decks.store') }}" method="POST">
+          {{ csrfField() }}
+          <div class="input-group">
+            <label for="title">Nom du deck</label>
+            <input
+              type="text"
+              name="title"
+              id="title"
+              placeholder="ex: Programmation AdonisJS"
+              required
+              autocomplete="off"
+            />
+            <small>Donnez un nom clair à votre collection.</small>
+          </div>
+
+          <div class="input-group">
+            <label for="description">Description</label>
+            <textarea name="description" id="description" rows="4" placeholder="Décrivez brièvement le contenu..."></textarea>
+          </div>
+
+          <div class="form-footer">
+            <button type="submit" class="btn-submit">
+              <span>Enregistrer le deck</span>
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                width="20"
+                height="20"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+              >
+                <path d="M5 12h14" />
+                <path d="m12 5 7 7-7 7" />
+              </svg>
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+  @end
+@end
