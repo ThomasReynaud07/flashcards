@@ -7,6 +7,15 @@ export default class Flashcard extends BaseModel {
   @column({ isPrimary: true })
   declare id: number
 
+  @column()
+  declare question: string
+
+  @column()
+  declare answer: string
+
+  @column()
+  declare deckId: number
+
   @column.dateTime({ autoCreate: true })
   declare createdAt: DateTime
 
