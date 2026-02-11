@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="fr">
+  <head>
+    <meta charset="utf-8" />
+    <title>
+      {{ title || 'FlashyCards' }}
+    </title>
+    @vite(['resources/css/app.css', 'resources/js/app.js'])
+  </head>
+  <body>
+    @!component('components/header')
+
+    <main class="container">
+      {{{ body }}}
+      {{-- On utilise une variable simple ici --}}
+    </main>
+
+    <footer style="text-align: center; color: #94a3b8; margin-top: 4rem;">
+      <small>© 2026 FlashyCards</small>
+    </footer>
+  </body>
+</html>

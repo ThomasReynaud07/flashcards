@@ -1,21 +1,58 @@
-<!DOCTYPE html>
-<html>
-  <head>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>
-      AdonisJS - A fully featured web framework for Node.js
-    </title>
+@component('layouts/main', { title: 'Mes Decks' })
+  <header class="main-header">
+    <div>
+      <h1>
+        Mes decks
+      </h1>
+      <p class="subtitle">
+        Gérez vos collections de cartes.
+      </p>
+    </div>
+    <a href="/decks/create" class="btn-create">+ Créer un deck</a>
+  </header>
 
-    <link rel="preconnect" href="https://fonts.bunny.net" />
-    <link
-      href="https://fonts.bunny.net/css?family=instrument-sans:400,400i,500,500i,600,600i,700,700i"
-      rel="stylesheet"
-    />
-    @vite(['resources/css/app.css', 'resources/js/app.js'])
-    @stack('dumper')
-  </head>
-  <body class="min-h-screen w-screen font-sans">
-
-  </body>
-</html>
+  <div class="glass-card">
+    <table class="deck-table">
+      <thead>
+        <tr>
+          <th>
+            Titre
+          </th>
+          <th>
+            Description
+          </th>
+          <th class="text-center">
+            Volume
+          </th>
+          <th>
+          </th>
+        </tr>
+      </thead>
+      <tbody>
+        @each(deck in decks)
+          <tr class="row-hover" onclick="window.location='/decks/{{ deck.id }}'">
+            <td>
+              <div class="deck-title-cell">
+                <div class="deck-icon">
+                  #
+                </div>
+                <span class="deck-link">{{ deck.title }}</span>
+              </div>
+            </td>
+            <td>
+              <p class="deck-desc">
+                {{ deck.description }}
+              </p>
+            </td>
+            <td class="text-center">
+              <span class="badge">{{ deck.$extras.flashcards_count || 0 }} cartes</span>
+            </td>
+            <td class="text-right action-link">
+              Voir →
+            </td>
+          </tr>
+        @endeach
+      </tbody>
+    </table>
+  </div>
+@end
