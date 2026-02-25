@@ -1,0 +1,175 @@
+@layout('components/layout')
+
+  <style>
+    .page-wrapper {
+      background-color: #f8fafc;
+      min-height: calc(100vh - 80px);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 40px 20px;
+      font-family: 'Inter', sans-serif;
+    }
+    
+    /* La carte principale */
+    
+    .form-card {
+      width: 100%;
+      max-width: 500px;
+      background: #ffffff;
+      padding: 50px;
+      /* Espace généreux à l'intérieur */
+      border-radius: 24px;
+      box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.05), 0 10px 10px -5px rgba(0, 0, 0, 0.02);
+      box-sizing: border-box;
+    }
+    
+    .header-section {
+      text-align: center;
+      margin-bottom: 40px;
+    }
+    
+    .form-title {
+      color: #1e293b;
+      font-weight: 800;
+      font-size: 1.75rem;
+      margin: 0 0 10px 0;
+      letter-spacing: -0.025em;
+    }
+    
+    .form-subtitle {
+      color: #64748b;
+      font-size: 0.95rem;
+      margin: 0;
+    }
+    
+    .deck-name {
+      color: #6366f1;
+      font-weight: 700;
+    }
+    
+    /* Formulaire */
+    
+    .form-group {
+      margin-bottom: 24px;
+      width: 100%;
+    }
+    
+    .form-label {
+      display: block;
+      font-weight: 600;
+      color: #475569;
+      margin-bottom: 8px;
+      font-size: 0.85rem;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+    
+    .form-input {
+      width: 100%;
+      padding: 14px 18px;
+      border: 2px solid #e2e8f0;
+      border-radius: 12px;
+      font-size: 1rem;
+      color: #1e293b;
+      transition: all 0.2s ease-in-out;
+      outline: none;
+      box-sizing: border-box;
+      /* Crucial pour ne pas coller à droite */
+      display: block;
+      background: #fcfcfd;
+    }
+    
+    .form-input:focus {
+      border-color: #6366f1;
+      background-color: #ffffff;
+      box-shadow: 0 0 0 4px rgba(99, 102, 241, 0.1);
+    }
+    
+    textarea.form-input {
+      min-height: 120px;
+      resize: none;
+      /* Plus propre visuellement */
+    }
+    
+    /* Boutons */
+    
+    .btn-submit {
+      width: 100%;
+      background: #6366f1;
+      color: white;
+      padding: 16px;
+      border: none;
+      border-radius: 12px;
+      font-weight: 700;
+      font-size: 1rem;
+      cursor: pointer;
+      transition: all 0.2s;
+      box-shadow: 0 4px 6px -1px rgba(99, 102, 241, 0.2);
+      margin-top: 10px;
+    }
+    
+    .btn-submit:hover {
+      background: #4f46e5;
+      transform: translateY(-1px);
+      box-shadow: 0 10px 15px -3px rgba(99, 102, 241, 0.3);
+    }
+    
+    .btn-cancel {
+      display: block;
+      text-align: center;
+      margin-top: 20px;
+      color: #94a3b8;
+      text-decoration: none;
+      font-weight: 500;
+      font-size: 0.9rem;
+      transition: color 0.2s;
+    }
+    
+    .btn-cancel:hover {
+      color: #64748b;
+    }
+  </style>
+
+  <div class="page-wrapper">
+    <div class="form-card">
+      <div class="header-section">
+        <h1 class="form-title">
+          Nouvelle Flashcard
+        </h1>
+        <p class="form-subtitle">
+          Dans le deck <span class="deck-name">{{ deck?.title }}</span>
+        </p>
+      </div>
+
+      <form action="{{ route('flashcards.store', { deckId: deck.id }) }}" method="POST">
+        {{ csrfField() }}
+        <div class="form-group">
+          <label for="question" class="form-label">Question (Recto)</label>
+          <input
+            type="text"
+            name="question"
+            id="question"
+            class="form-input"
+            placeholder="Ex: Quelle est la capitale du Japon ?"
+            required
+            autofocus
+          />
+        </div>
+
+        <div class="form-group">
+          <label for="answer" class="form-label">Réponse (Verso)</label>
+          <textarea name="answer" id="answer" class="form-input" placeholder="Ex: Tokyo" required></textarea>
+        </div>
+
+        <button type="submit" class="btn-submit">
+          Enregistrer la carte
+      </button>
+
+        <a href="{{ route('decks.show', { id: deck.id }) }}" class="btn-cancel">
+          Annuler et revenir
+      </a>
+      </form>
+    </div>
+  </div>
+@end
