@@ -323,7 +323,162 @@ h1 {
   transform: translateY(-2px);
   box-shadow: 0 15px 20px -5px rgba(79, 70, 229, 0.3);
 }
+.deck-details-container {
+  background-color: var(--bg-light);
+  min-height: 100vh;
+  padding-bottom: 50px;
+}
 
+/* Style des miettes de pain (breadcrumb) */
+.breadcrumb-item a {
+  color: var(--primary-color);
+  text-decoration: none;
+}
+
+/* Header de la page */
+.deck-header-title {
+  color: var(--text-main);
+  font-weight: 700;
+}
+
+/* Style des Flashcards */
+.flashcard-item {
+  border: none;
+  border-radius: 12px;
+  transition:
+    transform 0.2s ease,
+    box-shadow 0.2s ease;
+  background: white;
+  box-shadow: var(--card-shadow);
+}
+
+.flashcard-item:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 10px 15px -3px rgb(0 0 0 / 0.1);
+}
+
+.badge-side {
+  font-size: 0.7rem;
+  letter-spacing: 0.05em;
+  padding: 0.5em 1em;
+  border-radius: 6px;
+  text-transform: uppercase;
+  font-weight: 600;
+}
+
+.badge-recto {
+  background-color: #f1f5f9;
+  color: #475569;
+}
+
+.badge-verso {
+  background-color: #eef2ff;
+  color: var(--primary-color);
+}
+
+.card-divider {
+  border: 0;
+  border-top: 1px dashed #e2e8f0;
+  margin: 1.5rem 0;
+}
+
+/* Bouton violet identique à ton image */
+.btn-flashy {
+  background-color: var(--primary-color);
+  color: white;
+  border: none;
+  border-radius: 8px;
+  padding: 10px 20px;
+  font-weight: 600;
+  transition: background 0.2s;
+}
+
+.btn-flashy:hover {
+  background-color: var(--primary-hover);
+  color: white;
+}
+/* Container principal */
+.deck-container {
+  max-width: 900px;
+  margin: 40px auto;
+  padding: 0 20px;
+}
+
+/* En-tête */
+.deck-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 30px;
+}
+
+.deck-title {
+  font-size: 2.5rem;
+  font-weight: 800;
+  color: #1e293b;
+  margin: 0;
+}
+
+/* Bouton Violet (comme ton image d'accueil) */
+.btn-primary-flashy {
+  background-color: #6366f1;
+  color: white;
+  padding: 12px 24px;
+  border-radius: 10px;
+  text-decoration: none;
+  font-weight: 600;
+  transition: all 0.2s;
+  border: none;
+  display: inline-block;
+}
+
+.btn-primary-flashy:hover {
+  background-color: #4f46e5;
+  transform: translateY(-2px);
+  color: white;
+}
+
+/* Design des Flashcards */
+.flashcard-card {
+  background: white;
+  border-radius: 16px;
+  padding: 25px;
+  margin-bottom: 20px;
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
+  border: 1px solid #f1f5f9;
+}
+
+.label-side {
+  font-size: 0.75rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  padding: 4px 12px;
+  border-radius: 6px;
+  display: inline-block;
+  margin-bottom: 10px;
+}
+
+.label-recto {
+  background: #f1f5f9;
+  color: #64748b;
+}
+.label-verso {
+  background: #eef2ff;
+  color: #6366f1;
+}
+
+.card-content {
+  font-size: 1.1rem;
+  color: #334155;
+  margin: 10px 0;
+}
+
+.card-separator {
+  border: 0;
+  border-top: 1px dashed #e2e8f0;
+  margin: 20px 0;
+}
 @keyframes fadeIn {
   from {
     opacity: 0;
