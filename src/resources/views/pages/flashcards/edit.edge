@@ -1,0 +1,75 @@
+@layout('components/layout')
+
+  <style>
+    .page-bg {
+      background: #f8fafc;
+      min-height: 90vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      padding: 20px;
+    }
+    
+    .form-card {
+      width: 100%;
+      max-width: 500px;
+      background: white;
+      padding: 40px;
+      border-radius: 20px;
+      box-shadow: 0 10px 25px rgba(0,0,0,0.05);
+      box-sizing: border-box;
+    }
+    
+    .form-input {
+      width: 100%;
+      padding: 12px;
+      border: 2px solid #e2e8f0;
+      border-radius: 10px;
+      box-sizing: border-box;
+      margin-top: 5px;
+      margin-bottom: 20px;
+      outline: none;
+    }
+    
+    .btn-save {
+      background: #6366f1;
+      color: white;
+      width: 100%;
+      padding: 15px;
+      border: none;
+      border-radius: 10px;
+      font-weight: bold;
+      cursor: pointer;
+    }
+  </style>
+
+  <div class="page-bg">
+    <div class="form-card">
+      <h1 style="text-align: center; margin-bottom: 30px; color: #1e293b;">
+        Modifier la carte
+      </h1>
+
+      <form
+        action="{{ route('flashcards.update', { deckId: deck.id, id: card.id }) }}?_method=PATCH"
+        method="POST"
+      >
+        {{ csrfField() }}
+
+      <label style="font-weight: bold; color: #475569;">QUESTION</label>
+        <input type="text" name="question" class="form-input" value="{{ card.question }}" />
+
+        <label style="font-weight: bold; color: #475569;">RÉPONSE</label>
+        <textarea name="answer" class="form-input" style="min-height: 100px;">{{ card.answer }}</textarea>
+
+        <button type="submit" class="btn-save">Enregistrer les modifications</button>
+
+        <a
+          href="{{ route('decks.show', { id: deck.id }) }}"
+          style="display: block; text-align: center; margin-top: 15px; color: #94a3b8; text-decoration: none;"
+        >
+          Abandonner
+      </a>
+      </form>
+    </div>
+  </div>
+@end

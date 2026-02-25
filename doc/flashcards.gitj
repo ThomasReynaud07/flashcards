@@ -83,6 +83,29 @@
       "duration": 15,
       "status": "Done",
       "author": "ThomasReynaud07"
+    },
+    {
+      "id": "2b99ebdf-5fa0-4fd0-8191-27cab4560554",
+      "type": "commitpatch",
+      "sha": "bf5f69ebb6e36e2930652a1de598d46cd4936df7",
+      "url": "https://github.com/ThomasReynaud07/flashcards/commit/bf5f69ebb6e36e2930652a1de598d46cd4936df7",
+      "name": "feat(Cards):Ajout de cartes possibles",
+      "description": "Il est possible de rajouter des cartes depuis la pages ou il y a toutes les cartes. ",
+      "date": "2026-02-25T14:10:00.000Z",
+      "duration": 40,
+      "status": "Done",
+      "author": "ThomasReynaud07",
+      "patch": true
+    },
+    {
+      "id": "2429a589-7ed9-4818-bec7-8ee6fe243953",
+      "type": "commitless",
+      "name": "Absence",
+      "description": "",
+      "date": "2026-02-04T11:20:00.000Z",
+      "duration": 225,
+      "status": "Done",
+      "author": "ThomasReynaud07"
     }
   ]
 }
