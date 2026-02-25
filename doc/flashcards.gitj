@@ -63,6 +63,26 @@
       "duration": 225,
       "status": "Done",
       "author": "ThomasReynaud07"
+    },
+    {
+      "id": "29aa1825-5888-4ff4-a54b-facd0591e549",
+      "type": "commitless",
+      "name": "learn(consignes):Ecoutes des consignes",
+      "description": "Le prof nous a dis de faire un scrum meeting et il nous a expliqué comment faire.",
+      "date": "2026-02-25T11:20:00.000Z",
+      "duration": 10,
+      "status": "Done",
+      "author": "ThomasReynaud07"
+    },
+    {
+      "id": "a8e22788-b66c-4892-b829-94f87122ea46",
+      "type": "commitless",
+      "name": "chore(scrum-meeting)",
+      "description": "Ce que j'ai fait :\r\nJai implémenté la fonction de pouvoir créer des decks\r\nCe que je vais faire : \r\nJe vais implémenter la fonction de pouvoir ajouter des cartes aux différents decks et peut-être commencer à les utiliser.\r\nProblèmes bloquant :\r\nPour le moment aucun",
+      "date": "2026-02-25T11:35:00.000Z",
+      "duration": 15,
+      "status": "Done",
+      "author": "ThomasReynaud07"
     }
   ]
 }

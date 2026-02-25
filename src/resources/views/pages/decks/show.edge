@@ -1,0 +1,210 @@
+@layout('components/layout')
+
+  <style>
+    .deck-container {
+      max-width: 900px;
+      margin: 40px auto;
+      padding: 0 20px;
+    }
+    
+    /* Header du Deck */
+    
+    .deck-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 40px;
+      background: white;
+      padding: 30px;
+      border-radius: 20px;
+      box-shadow: 0 4px 15px rgba(0,0,0,0.02);
+    }
+    
+    .deck-title {
+      font-size: 2.2rem;
+      font-weight: 800;
+      color: #1e293b;
+      margin: 0;
+    }
+    
+    .text-muted {
+      color: #64748b;
+      margin-top: 5px;
+    }
+    
+    /* Bouton Ajouter */
+    
+    .btn-primary-flashy {
+      background: #6366f1;
+      color: white;
+      padding: 12px 24px;
+      border-radius: 12px;
+      text-decoration: none;
+      font-weight: 700;
+      transition: all 0.2s;
+    }
+    
+    .btn-primary-flashy:hover {
+      background: #4f46e5;
+      transform: translateY(-2px);
+    }
+    
+    /* Liste des cartes */
+    
+    .flashcards-list {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(400px, 1fr));
+      gap: 25px;
+    }
+    
+    .flashcard-card {
+      background: white;
+      border-radius: 20px;
+      padding: 25px;
+      box-shadow: 0 10px 25px rgba(0,0,0,0.03);
+      position: relative;
+      border: 1px solid #f1f5f9;
+    }
+    
+    .label-side {
+      font-size: 0.7rem;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      font-weight: 800;
+      padding: 4px 8px;
+      border-radius: 6px;
+    }
+    
+    .label-recto {
+      background: #eef2ff;
+      color: #6366f1;
+    }
+    
+    .label-verso {
+      background: #f0fdf4;
+      color: #16a34a;
+    }
+    
+    .card-content {
+      font-size: 1.1rem;
+      color: #334155;
+      margin: 15px 0;
+    }
+    
+    .card-separator {
+      border: 0;
+      border-top: 2px dashed #f1f5f9;
+      margin: 20px 0;
+    }
+    
+    /* Zone d'actions (Modifier / Supprimer) */
+    
+    .card-actions {
+      display: flex;
+      gap: 15px;
+      margin-bottom: 15px;
+      justify-content: flex-end;
+    }
+    
+    .btn-edit {
+      color: #6366f1;
+      text-decoration: none;
+      font-weight: 600;
+      font-size: 0.9rem;
+    }
+    
+    .btn-delete {
+      background: none;
+      border: none;
+      color: #f87171;
+      font-weight: 600;
+      font-size: 0.9rem;
+      cursor: pointer;
+      padding: 0;
+    }
+    
+    .btn-edit:hover {
+      text-decoration: underline;
+    }
+    
+    .btn-delete:hover {
+      color: #ef4444;
+    }
+  </style>
+
+  <div class="deck-container">
+    <nav style="margin-bottom: 20px;">
+      <a
+        href="{{ route('decks.index') }}"
+        style="color: #6366f1; text-decoration: none; font-weight: 600;"
+      >← Retour à mes decks</a>
+    </nav>
+
+    <div class="deck-header">
+      <div>
+        <h1 class="deck-title">
+          {{ deck.title }}
+        </h1>
+        @if(deck.description)
+          <p class="text-muted">
+            {{ deck.description }}
+          </p>
+        @endif
+      </div>
+      <a href="{{ route('flashcards.create', { deckId: deck.id }) }}" class="btn-primary-flashy">
+        + Ajouter une carte
+    </a>
+    </div>
+
+    <div class="flashcards-list">
+      @each(card in deck.flashcards)
+        <div class="flashcard-card">
+
+          <div class="card-actions">
+            <a href="{{ route('flashcards.edit', { deckId: deck.id, id: card.id }) }}" class="btn-edit">
+              Modifier
+          </a>
+            <form
+              action="{{ route('flashcards.destroy', { deckId: deck.id, id: card.id }) }}?_method=DELETE"
+              method="POST"
+              onsubmit="return confirm('Supprimer cette carte ?')"
+            >
+              {{ csrfField() }}
+            <button type="submit" class="btn-delete">Supprimer</button>
+            </form>
+          </div>
+
+          <div class="recto">
+            <span class="label-side label-recto">Recto (Question)</span>
+            <p class="card-content">
+              {{ card.question }}
+            </p>
+          </div>
+
+          <hr class="card-separator" />
+
+          <div class="verso">
+            <span class="label-side label-verso">Verso (Réponse)</span>
+            <p class="card-content" style="font-weight: 600;">
+              {{ card.answer }}
+            </p>
+          </div>
+        </div>
+      @else
+        <div
+          style="text-align: center; padding: 60px; background: white; border-radius: 20px; grid-column: 1 / -1;"
+        >
+          <p class="text-muted" style="font-size: 1.2rem;">
+            Aucune carte dans ce deck pour le moment.
+          </p>
+          <a
+            href="{{ route('flashcards.create', { deckId: deck.id }) }}"
+            style="color: #6366f1; font-weight: 700; text-decoration: none;"
+          >
+            Créer la première carte
+        </a>
+        </div>
+      @endeach
+    </div>
+  </div>
+@end
