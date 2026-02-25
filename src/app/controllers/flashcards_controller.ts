@@ -26,3 +26,10 @@ export default class FlashcardsController {
     await card?.merge(data).save()
     return response.redirect().toPath(`/decks/${params.deckId}`)
   }
+
+  public async destroy({ params, response }: HttpContext) {
+    const card = await Flashcard.find(params.id)
+    await card?.delete()
+    return response.redirect().toPath(`/decks/${params.deckId}`)
+  }
+}
