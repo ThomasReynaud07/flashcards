@@ -164,13 +164,9 @@
             <a href="{{ route('flashcards.edit', { deckId: deck.id, id: card.id }) }}" class="btn-edit">
               Modifier
           </a>
-            <form
-              action="{{ route('flashcards.destroy', { deckId: deck.id, id: card.id }) }}?_method=DELETE"
-              method="POST"
-              onsubmit="return confirm('Supprimer cette carte ?')"
-            >
+            <form action="{{ route('flashcards.destroy', { deckId: deck.id, id: card.id }) }}" method="POST">
               {{ csrfField() }}
-            <button type="submit" class="btn-delete">Supprimer</button>
+            <button type="submit" class="btn-delete" onclick="return confirm('Supprimer cette carte ?')">Supprimer</button>
             </form>
           </div>
 

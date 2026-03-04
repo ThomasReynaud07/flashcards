@@ -26,5 +26,5 @@ router.get('/decks/:deckId/cards/:id/edit', [FlashcardsController, 'edit']).as('
 router.post('/decks/:deckId/cards/:id', [FlashcardsController, 'update']).as('flashcards.update')
 
 router
-  .delete('/decks/:deckId/cards/:id', [FlashcardsController, 'destroy'])
+  .post('/decks/:deckId/cards/:id/delete', [FlashcardsController, 'destroy'])
   .as('flashcards.destroy')
