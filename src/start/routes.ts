@@ -14,12 +14,14 @@ import FlashcardsController from '#controllers/flashcards_controller'
 router.get('/', [DecksController, 'index']).as('decks.index')
 
 router.get('/decks/create', [DecksController, 'create']).as('decks.create')
-router.get('/decks/:deckId/edit', [DecksController, 'edit']).as('decks.edit')
-router.post('/decks/:deckId/delete', [DecksController, 'destroy']).as('decks.destroy')
-
 router.post('/decks', [DecksController, 'store']).as('decks.store')
 
-router.get('/decks/:id', [DecksController, 'show']).as('decks.show')
+router.get('/decks/:deckId/edit', [DecksController, 'edit']).as('decks.edit')
+router.post('/decks/:deckId', [DecksController, 'update']).as('decks.update')
+
+router.post('/decks/:deckId/delete', [DecksController, 'destroy']).as('decks.destroy')
+
+router.get('/decks/:deckId', [DecksController, 'show']).as('decks.show')
 
 router.get('/decks/:deckId/cards/create', [FlashcardsController, 'create']).as('flashcards.create')
 router.post('/decks/:deckId/cards', [FlashcardsController, 'store']).as('flashcards.store')

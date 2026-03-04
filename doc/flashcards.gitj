@@ -106,6 +106,19 @@
       "duration": 225,
       "status": "Done",
       "author": "ThomasReynaud07"
+    },
+    {
+      "id": "806b4977-df7f-4c24-9bd0-dd945752ac80",
+      "type": "commitpatch",
+      "sha": "dbda479b0c07e08ba81cebb50930a582f8033305",
+      "url": "https://github.com/ThomasReynaud07/flashcards/commit/dbda479b0c07e08ba81cebb50930a582f8033305",
+      "name": "fix(show.edge):Correction de l'html et surtout du CSS",
+      "description": "Cela m'as pris beaucoup de temps car les box ne voulait pas s'alligner comme je le voulais et même l'IA n'y arrivait pas",
+      "date": "2026-03-04T14:25:00.000Z",
+      "duration": 32,
+      "status": "Done",
+      "author": "ThomasReynaud07",
+      "patch": true
     }
   ]
 }
