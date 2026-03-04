@@ -48,14 +48,10 @@
       <h1 style="text-align: center; margin-bottom: 30px; color: #1e293b;">
         Modifier la carte
       </h1>
-
-      <form
-        action="{{ route('flashcards.update', { deckId: deck.id, id: card.id }) }}?_method=PATCH"
-        method="POST"
-      >
+      <form action="{{ route('flashcards.update', { deckId: deck.id, id: card.id }) }}" method="POST">
         {{ csrfField() }}
 
-      <label style="font-weight: bold; color: #475569;">QUESTION</label>
+        <label style="font-weight: bold; color: #475569;">QUESTION</label>
         <input type="text" name="question" class="form-input" value="{{ card.question }}" />
 
         <label style="font-weight: bold; color: #475569;">RÉPONSE</label>
