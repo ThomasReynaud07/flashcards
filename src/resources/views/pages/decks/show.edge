@@ -1,5 +1,7 @@
 @layout('components/layout')
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11">
 
+  </script>
   <style>
     .deck-container {
       max-width: 900px;
@@ -121,14 +123,22 @@
       font-size: 0.9rem;
       cursor: pointer;
       padding: 0;
-    }
-    
-    .btn-edit:hover {
-      text-decoration: underline;
+      transition: color 0.2s;
     }
     
     .btn-delete:hover {
       color: #ef4444;
+      text-decoration: underline;
+    }
+    
+    /* Optionnel : style pour le bouton Modifier que j'ai vu sur ton image */
+    
+    .btn-edit {
+      color: #6366f1;
+      text-decoration: none;
+      font-weight: 600;
+      font-size: 0.9rem;
+      margin-right: 10px;
     }
   </style>
 
@@ -164,9 +174,16 @@
             <a href="{{ route('flashcards.edit', { deckId: deck.id, id: card.id }) }}" class="btn-edit">
               Modifier
           </a>
-            <form action="{{ route('flashcards.destroy', { deckId: deck.id, id: card.id }) }}" method="POST">
+            <form
+              id="delete-form-{{ card.id }}"
+              action="{{ route('flashcards.destroy', { deckId: deck.id, id: card.id }) }}"
+              method="POST"
+              style="display: inline;"
+            >
               {{ csrfField() }}
-            <button type="submit" class="btn-delete" onclick="return confirm('Supprimer cette carte ?')">Supprimer</button>
+  <button type="button" class="btn-delete" onclick="confirmDelete('{{ card.id }}')">
+                Supprimer
+  </button>
             </form>
           </div>
 
@@ -203,4 +220,28 @@
       @endeach
     </div>
   </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11">
+
+  </script>
+
+  {{--  gemini à fait ce script pour les popups c plus beau que les simples alertes  --}}
+  <script>
+    function confirmDelete(cardId) {
+      Swal.fire({
+        title: "Supprimer cette carte ?",
+        text: "Tu ne pourras pas revenir en arrière !",
+        icon: "warning",
+        showCancelButton: true,
+        confirmButtonColor: "#3085d6",
+        cancelButtonColor: "#d33",
+        confirmButtonText: "Oui, supprimer !",
+        cancelButtonText: "Annuler"
+      }).then(result => {
+        if (result.isConfirmed) {
+          document.getElementById("delete-form-" + cardId).submit();
+        }
+      });
+    }
+  </script>
 @end
