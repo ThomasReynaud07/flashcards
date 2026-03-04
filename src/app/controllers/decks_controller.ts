@@ -22,4 +22,16 @@ export default class DecksController {
 
     return view.render('pages/decks/show', { deck })
   }
+
+  public async edit({ params, view }: HttpContext) {
+    const data = await Deck.find(params.id)
+    const deck = await Deck.find(params.deckId)
+    return view.render('pages/decks/edit', { data, deck })
+  }
+
+  public async destroy({ params, response }: HttpContext) {
+    const deck = await Deck.find(params.id)
+    await deck?.delete()
+    return response.redirect().toPath(`/decks/${params.deckId}`)
+  }
 }

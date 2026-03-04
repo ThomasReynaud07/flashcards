@@ -14,6 +14,8 @@ import FlashcardsController from '#controllers/flashcards_controller'
 router.get('/', [DecksController, 'index']).as('decks.index')
 
 router.get('/decks/create', [DecksController, 'create']).as('decks.create')
+router.get('/decks/:deckId/edit', [DecksController, 'edit']).as('decks.edit')
+router.post('/decks/:deckId/delete', [DecksController, 'destroy']).as('decks.destroy')
 
 router.post('/decks', [DecksController, 'store']).as('decks.store')
 
