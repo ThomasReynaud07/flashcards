@@ -1,29 +1,25 @@
 @layout('components/layout')
 
   <style>
+    /* --- TON CSS EXISTANT --- */
+    
     .deck-container {
       max-width: 1000px;
       margin: 40px auto;
       padding: 0 20px;
     }
     
-    /* --- LE HEADER COMPACT ET ALIGNÉ --- */
-    
     .deck-header {
       background: white;
       padding: 30px 40px;
-      /* Moins de padding vertical pour "monter" le contenu */
       border-radius: 24px;
       box-shadow: 0 4px 20px rgba(0,0,0,0.04);
       margin-bottom: 40px;
       display: grid;
-      grid-template-areas: "titre actions"
-                                 "description bouton";
+      grid-template-areas: "titre actions" "description bouton";
       grid-template-columns: 1fr auto;
       align-items: center;
-      /* Aligne verticalement les éléments de chaque ligne */
       gap: 10px 40px;
-      /* Espace entre les lignes et les colonnes */
     }
     
     .deck-title {
@@ -41,19 +37,14 @@
       margin: 0;
     }
     
-    /* Liens de gestion (Haut Droite) */
-    
     .deck-management-links {
       grid-area: actions;
       display: flex;
       gap: 20px;
       justify-content: flex-end;
       align-self: start;
-      /* Garde les petits liens bien en haut */
       padding-top: 10px;
     }
-    
-    /* Bouton Ajouter (Bas Droite, mais remonté) */
     
     .deck-add-button-container {
       grid-area: bouton;
@@ -70,7 +61,6 @@
       font-weight: 700;
       transition: all 0.2s;
       white-space: nowrap;
-      /* Évite que le bouton s'écrase */
     }
     
     .btn-add-main:hover {
@@ -95,26 +85,25 @@
       padding: 0;
     }
     
-    /* --- RESTE DU LAYOUT (GRILLE DES CARTES) --- */
-    
     .flashcards-grid {
       display: grid;
       grid-template-columns: repeat(auto-fill, minmax(420px, 1fr));
       gap: 30px;
     }
     
+    /* MODIFICATION ICI : On ajoute un curseur pour montrer qu'on peut cliquer sur la petite carte */
+    
     .card-item {
       background: white;
       border-radius: 20px;
       padding: 30px;
       border: 1px solid #f1f5f9;
+      cursor: pointer;
+      transition: 0.2s;
     }
     
-    .card-header-actions {
-      display: flex;
-      justify-content: flex-end;
-      gap: 15px;
-      margin-bottom: 15px;
+    .card-item:hover {
+      border-color: #6366f1;
     }
     
     .tag {
@@ -147,6 +136,95 @@
       border-top: 2px dashed #f1f5f9;
       margin: 20px 0;
     }
+    
+    /* --- NOUVEAU CSS POUR LA PRÉVISUALISATION --- */
+    
+    .preview-overlay {
+      display: none;
+      /* Caché par défaut */
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0, 0, 0, 0.85);
+      z-index: 1000;
+      justify-content: center;
+      align-items: center;
+      backdrop-filter: blur(5px);
+    }
+    
+    /* Le conteneur 3D */
+    
+    .flip-container {
+      width: 500px;
+      height: 350px;
+      perspective: 1000px;
+    }
+    
+    .flip-inner {
+      position: relative;
+      width: 100%;
+      height: 100%;
+      transition: transform 0.6s;
+      transform-style: preserve-3d;
+    }
+    
+    /* La classe qui fait tourner la carte */
+    
+    .is-flipped {
+      transform: rotateY(180deg);
+    }
+    
+    .card-front,
+    .card-back {
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      backface-visibility: hidden;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      background: white;
+      border-radius: 30px;
+      padding: 40px;
+      text-align: center;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+    }
+    
+    .card-back {
+      transform: rotateY(180deg);
+      background: #f8fafc;
+    }
+    
+    .close-btn {
+      position: absolute;
+      top: 30px;
+      right: 40px;
+      color: white;
+      font-size: 40px;
+      cursor: pointer;
+      font-weight: bold;
+    }
+    
+    .card-header-actions {
+      display: flex;
+      justify-content: flex-end;
+      /* Pousse tout à droite */
+      align-items: center;
+      /* Aligne verticalement au centre */
+      gap: 15px;
+      margin-bottom: 15px;
+    }
+    
+    /* On force le formulaire à ne pas prendre de place inutile */
+    
+    .card-header-actions form {
+      display: inline-flex;
+      margin: 0;
+      padding: 0;
+    }
   </style>
 
   <div class="deck-container">
@@ -156,14 +234,13 @@
         style="color: #6366f1; text-decoration: none; font-weight: 600;"
       >
         ← Retour à mes decks
-    </a>
+      </a>
     </nav>
 
     <header class="deck-header">
       <h1 class="deck-title">
         {{ deck.title }}
       </h1>
-
       <p class="deck-description">
         {{ deck.description || 'Aucune description' }}
       </p>
@@ -172,29 +249,32 @@
         <a href="{{ route('decks.edit', { deckId: deck.id }) }}" class="link-edit">Modifier le deck</a>
         <form id="delete-deck-form" action="{{ route('decks.destroy', { deckId: deck.id }) }}" method="POST">
           {{ csrfField() }}
-        <button type="button" class="link-delete" onclick="confirmDeleteDeck()">Supprimer le deck</button>
+          <button type="button" class="link-delete" onclick="confirmDeleteDeck()">Supprimer le deck</button>
         </form>
       </div>
 
       <div class="deck-add-button-container">
-        <a href="{{ route('flashcards.create', { deckId: deck.id }) }}" class="btn-add-main">
-          + Ajouter une carte
-      </a>
+        <a href="{{ route('flashcards.create', { deckId: deck.id }) }}" class="btn-add-main">+ Ajouter une carte</a>
       </div>
     </header>
 
     <div class="flashcards-grid">
       @each(card in deck.flashcards)
-        <article class="card-item">
-          <div class="card-header-actions">
-            <a href="{{ route('flashcards.edit', { deckId: deck.id, id: card.id }) }}" class="link-edit">Modifier</a>
+        <article class="card-item" onclick="ouvrirPrevisualisation('{{ card.question }}', '{{ card.answer }}')">
+          <div class="card-header-actions" onclick="event.stopPropagation()">
+            <a href="{{ route('flashcards.edit', { deckId: deck.id, id: card.id }) }}" class="link-edit">
+              Modifier
+            </a>
+
             <form
               id="delete-form-{{ card.id }}"
               action="{{ route('flashcards.destroy', { deckId: deck.id, id: card.id }) }}"
               method="POST"
             >
               {{ csrfField() }}
-            <button type="button" class="link-delete" onclick="confirmDeleteCard('{{ card.id }}')">Supprimer</button>
+              <button type="button" class="link-delete" onclick="confirmDeleteCard('{{ card.id }}')">
+                Supprimer
+              </button>
             </form>
           </div>
 
@@ -202,9 +282,7 @@
           <p class="content-text">
             {{ card.question }}
           </p>
-
           <hr class="divider" />
-
           <span class="tag tag-answer">Verso (Réponse)</span>
           <p class="content-text" style="font-weight: 600;">
             {{ card.answer }}
@@ -214,10 +292,46 @@
     </div>
   </div>
 
+  <div id="modalApercu" class="preview-overlay" onclick="fermerPrevisualisation()">
+    <span class="close-btn">&times;</span>
+
+    <div class="flip-container" onclick="basculerCarte(event)">
+      <div id="carteInterieur" class="flip-inner">
+        <div class="card-front">
+          <span class="tag tag-question" style="margin-bottom: 20px;">Question</span>
+          <h2 id="texteQuestion" style="font-size: 2rem; color: #1e293b;">
+          </h2>
+        </div>
+        <div class="card-back">
+          <span class="tag tag-answer" style="margin-bottom: 20px;">Réponse</span>
+          <h2 id="texteReponse" style="font-size: 2rem; color: #16a34a;">
+          </h2>
+        </div>
+      </div>
+    </div>
+  </div>
+
   <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11">
 
   </script>
   <script>
+    function ouvrirPrevisualisation(question, reponse) {
+      document.getElementById("texteQuestion").innerText = question;
+      document.getElementById("texteReponse").innerText = reponse;
+      document.getElementById("carteInterieur").classList.remove("is-flipped");
+      document.getElementById("modalApercu").style.display = "flex";
+    }
+
+    function fermerPrevisualisation() {
+      document.getElementById("modalApercu").style.display = "none";
+    }
+
+    function basculerCarte(event) {
+      event.stopPropagation();
+      var carte = document.getElementById("carteInterieur");
+      carte.classList.toggle("is-flipped");
+    }
+
     function confirmDeleteCard(id) {
       Swal.fire({
         title: "Supprimer ?",
@@ -225,8 +339,10 @@
         showCancelButton: true,
         confirmButtonColor: "#f87171",
         confirmButtonText: "Oui"
-      }).then(r => {
-        if (r.isConfirmed) document.getElementById("delete-form-" + id).submit();
+      }).then(function(result) {
+        if (result.isConfirmed) {
+          document.getElementById("delete-form-" + id).submit();
+        }
       });
     }
 
@@ -237,8 +353,10 @@
         showCancelButton: true,
         confirmButtonColor: "#f87171",
         confirmButtonText: "Supprimer"
-      }).then(r => {
-        if (r.isConfirmed) document.getElementById("delete-deck-form").submit();
+      }).then(function(result) {
+        if (result.isConfirmed) {
+          document.getElementById("delete-deck-form").submit();
+        }
       });
     }
   </script>
