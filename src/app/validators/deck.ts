@@ -1,10 +1,10 @@
 import vine from '@vinejs/vine'
 
-const deskValidator = vine.compile(
+const createDeckValidator = vine.compile(
   vine.object({
-    title: vine.string().minLength(5).maxLength(255),
-    description: vine.string().minLength(2),
+    title: vine.string().trim().unique({ table: 'decks', column: 'title' }),
+    description: vine.string().trim().minLength(10).optional(),
   })
 )
 
-export { deskValidator }
+export { createDeckValidator }

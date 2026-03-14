@@ -36,15 +36,32 @@
               name="title"
               id="title"
               placeholder="ex: Programmation AdonisJS"
-              required
+              value="{{ old('title') || '' }}"
+              class="{{ flashMessages.has('errors.title') ? 'input-error' : '' }}"
               autocomplete="off"
             />
+            @inputError('title')
+              <p class="error-message">
+                {{ $messages.join(', ') }}
+              </p>
+            @end
             <small>Donnez un nom clair à votre collection.</small>
           </div>
 
           <div class="input-group">
             <label for="description">Description</label>
-            <textarea name="description" id="description" rows="4" placeholder="Décrivez brièvement le contenu..."></textarea>
+            <textarea
+              name="description"
+              id="description"
+              rows="4"
+              placeholder="Décrivez brièvement le contenu..."
+              class="{{ flashMessages.has('errors.title') ? 'input-error' : '' }}"
+            >{{ old('description') || '' }}</textarea>
+            @inputError('description')
+              <p class="error-message">
+                {{ $messages.join(', ') }}
+              </p>
+            @end
           </div>
 
           <div class="form-footer">
@@ -75,5 +92,18 @@
         </form>
       </div>
     </div>
+    <style>
+      .input-error {
+        border-color: #f87171 !important;
+        background-color: #fef2f2 !important;
+      }
+      
+      .error-message {
+        color: #ef4444;
+        font-size: 0.85rem;
+        font-weight: 600;
+        margin-top: 5px;
+      }
+    </style>
   @end
 @end

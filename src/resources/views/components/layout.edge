@@ -9,7 +9,29 @@
   </head>
   <body>
     @include('Partials/header')
-
+    @if(flashMessages.has('notification'))
+      <div class="alert alert-success">
+        <div class="alert-content">
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            width="20"
+            height="20"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+          >
+            <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14" />
+            <polyline points="22 4 12 14.01 9 11.01" />
+          </svg>
+          <span>{{ flashMessages.get('notification') }}</span>
+        </div>
+        <button onclick="this.parentElement.remove()" class="alert-close">&times;</button>
+      </div>
+    @endif
+    
     <main class="container">
       {{{ await $slots.main() }}}
     </main>
@@ -19,3 +41,47 @@
     </footer>
   </body>
 </html>
+<style>
+  .alert {
+    max-width: 1000px;
+    margin: 20px auto;
+    padding: 16px 24px;
+    border-radius: 12px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background: #ecfdf5;
+    /* Vert très clair */
+    border: 1px solid #10b981;
+    color: #065f46;
+    animation: slideIn 0.3s ease-out;
+  }
+  
+  .alert-content {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    font-weight: 600;
+  }
+  
+  .alert-close {
+    background: none;
+    border: none;
+    font-size: 24px;
+    color: #065f46;
+    cursor: pointer;
+    line-height: 1;
+  }
+  
+  @keyframes slideIn {
+    from {
+      transform: translateY(-20px);
+      opacity: 0;
+    }
+  
+    to {
+      transform: translateY(0);
+      opacity: 1;
+    }
+  }
+</style>
