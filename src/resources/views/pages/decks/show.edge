@@ -46,10 +46,37 @@
       padding-top: 10px;
     }
     
+    /* Modifie le conteneur pour aligner les boutons horizontalement */
+    
     .deck-add-button-container {
       grid-area: bouton;
       display: flex;
       justify-content: flex-end;
+      gap: 12px;
+      /* Espace entre les deux boutons */
+      align-items: center;
+    }
+    
+    /* Style spécifique pour le bouton S'exercer (Play) */
+    
+    .btn-play {
+      background: #10b981;
+      /* Vert émeraude pour différencier l'action */
+      color: white !important;
+      padding: 12px 24px;
+      border-radius: 12px;
+      text-decoration: none;
+      font-weight: 700;
+      transition: all 0.2s;
+      white-space: nowrap;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    
+    .btn-play:hover {
+      background: #059669;
+      transform: translateY(-2px);
     }
     
     .btn-add-main {
@@ -141,17 +168,16 @@
     
     .preview-overlay {
       display: none;
-      /* Caché par défaut */
       position: fixed;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
+      inset: 0;
+      /* Équivalent top/left/right/bottom: 0 */
       background: rgba(0, 0, 0, 0.85);
       z-index: 1000;
       justify-content: center;
       align-items: center;
       backdrop-filter: blur(5px);
+      /* Empêche tout mouvement bizarre du contenu */
+      overflow: hidden;
     }
     
     /* Le conteneur 3D */
@@ -160,28 +186,42 @@
       width: 500px;
       height: 350px;
       perspective: 1000px;
+      /* On s'assure que le container est bien le référentiel */
+      position: relative;
+      margin: 0 auto;
+      /* Centre le container lui-même */
     }
+    
+    /* 1. On définit la base */
     
     .flip-inner {
-      position: relative;
+      position: absolute;
+      top: 0;
+      left: 0;
       width: 100%;
       height: 100%;
-      transition: transform 0.6s;
+      transition: transform 0.6s cubic-bezier(0.4, 0, 0.2, 1);
       transform-style: preserve-3d;
+      transform-origin: center center;
     }
     
-    /* La classe qui fait tourner la carte */
+    /* 2. On définit l'état tourné APRÈS (pour qu'il gagne) */
     
-    .is-flipped {
+    /* On ajoute .flip-inner pour être sûr que le navigateur l'applique bien sur l'élément */
+    
+    .flip-inner.is-flipped {
       transform: rotateY(180deg);
     }
     
     .card-front,
     .card-back {
       position: absolute;
+      top: 0;
+      left: 0;
       width: 100%;
       height: 100%;
       backface-visibility: hidden;
+      -webkit-backface-visibility: hidden;
       display: flex;
       flex-direction: column;
       justify-content: center;
@@ -190,7 +230,10 @@
       border-radius: 30px;
       padding: 40px;
       text-align: center;
-      box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+      /* On retire les marges auto ici pour ne pas perturber le placement absolute */
+      margin: 0;
+      box-sizing: border-box;
+      /* Crucial pour que le padding ne change pas la taille */
     }
     
     .card-back {
@@ -254,13 +297,26 @@
       </div>
 
       <div class="deck-add-button-container">
-        <a href="{{ route('flashcards.create', { deckId: deck.id }) }}" class="btn-add-main">+ Ajouter une carte</a>
+        @if(deck.flashcards.length > 0)
+          <a href="{{ route('decks.play', { id: deck.id }) }}" class="btn-play">
+            S'exercer
+          </a>
+        @endif
+        
+        <a href="{{ route('flashcards.create', { deckId: deck.id }) }}" class="btn-add-main">
+          + Ajouter une carte
+        </a>
       </div>
     </header>
 
     <div class="flashcards-grid">
       @each(card in deck.flashcards)
-        <article class="card-item" onclick="ouvrirPrevisualisation('{{ card.question }}', '{{ card.answer }}')">
+        <article
+          class="card-item"
+          data-question="{{ card.question }}"
+          data-answer="{{ card.answer }}"
+          onclick="ouvrirPrevisualisation(this.getAttribute('data-question'), this.getAttribute('data-answer'))"
+        >
           <div class="card-header-actions" onclick="event.stopPropagation()">
             <a href="{{ route('flashcards.edit', { deckId: deck.id, id: card.id }) }}" class="link-edit">
               Modifier

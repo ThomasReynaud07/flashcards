@@ -1,0 +1,293 @@
+@layout('components/layout')
+
+  <style>
+    .play-container {
+      max-width: 900px;
+      margin: 40px auto;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      min-height: 90vh;
+      font-family: 'Segoe UI', sans-serif;
+    }
+    
+    .game-area {
+      width: 100%;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      /* On utilise un gap important pour laisser la place à la rotation 3D */
+      gap: 80px;
+      margin-top: 30px;
+    }
+    
+    .flip-container {
+      width: 600px;
+      height: 400px;
+      /* On augmente la perspective pour aplatir l'effet de rapprochement */
+      perspective: 2000px;
+      position: relative;
+      /* On s'assure que le conteneur ne réduit pas sa taille */
+      flex-shrink: 0;
+    }
+    
+    .flip-inner {
+      position: relative;
+      width: 100%;
+      height: 100%;
+      transition: transform 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+      transform-style: preserve-3d;
+      cursor: pointer;
+    }
+    
+    .is-flipped {
+      transform: rotateY(180deg);
+    }
+    
+    .card-front,
+    .card-back {
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      /* Empêche de voir l'envers de la face opposée */
+      backface-visibility: hidden;
+      -webkit-backface-visibility: hidden;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      background: white;
+      border-radius: 32px;
+      padding: 40px;
+      box-shadow: 0 15px 35px rgba(0,0,0,0.1);
+      border: 1px solid #e2e8f0;
+      /* Important pour garder le contenu centré */
+      box-sizing: border-box;
+    }
+    
+    .card-back {
+      transform: rotateY(180deg);
+      background: #f8fafc;
+    }
+    
+    .controls {
+      /* On force le bouton à rester au dessus du reste pour qu'il soit toujours cliquable */
+      position: relative;
+      z-index: 10;
+      width: 100%;
+      display: flex;
+      justify-content: center;
+    }
+    
+    .btn-next {
+      background: #6366f1;
+      color: white;
+      padding: 18px 80px;
+      border-radius: 16px;
+      border: none;
+      font-weight: 700;
+      cursor: pointer;
+      font-size: 1.25rem;
+      transition: all 0.2s;
+      box-shadow: 0 4px 15px rgba(99, 102, 241, 0.4);
+    }
+    
+    .btn-next:hover {
+      background: #4f46e5;
+      transform: translateY(-3px);
+      box-shadow: 0 6px 20px rgba(99, 102, 241, 0.5);
+    }
+    
+    /* Progress Bar Style */
+    
+    .progress-container {
+      width: 100%;
+      max-width: 600px;
+      height: 12px;
+      background: #e2e8f0;
+      border-radius: 20px;
+      margin: 20px 0;
+      overflow: hidden;
+    }
+    
+    #progress-bar {
+      height: 100%;
+      background: #6366f1;
+      width: 0%;
+      transition: width 0.4s ease;
+    }
+    
+    .controls {
+      display: flex;
+      gap: 20px;
+      justify-content: center;
+      z-index: 10;
+      width: 100%;
+    }
+    
+    .btn-score {
+      padding: 16px 40px;
+      border-radius: 14px;
+      border: none;
+      font-weight: 800;
+      cursor: pointer;
+      font-size: 1.1rem;
+      transition: all 0.2s;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      color: white;
+    }
+    
+    .btn-wrong {
+      background: #f87171;
+      /* Rouge */
+      box-shadow: 0 4px 15px rgba(248, 113, 113, 0.3);
+    }
+    
+    .btn-correct {
+      background: #10b981;
+      /* Vert */
+      box-shadow: 0 4px 15px rgba(16, 185, 129, 0.3);
+    }
+    
+    .btn-score:hover {
+      transform: translateY(-3px) scale(1.05);
+      filter: brightness(1.1);
+    }
+    
+    /* Style pour l'écran de fin */
+    
+    .result-screen {
+      display: none;
+      /* Caché par défaut */
+      flex-direction: column;
+      align-items: center;
+      gap: 20px;
+    }
+    
+    .score-circle {
+      width: 150px;
+      height: 150px;
+      border-radius: 50%;
+      background: #6366f1;
+      color: white;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      font-size: 2rem;
+      font-weight: 900;
+      margin: 20px 0;
+    }
+  </style>
+
+  <div class="play-container">
+    <div id="game-view" style="width: 100%; display: flex; flex-direction: column; align-items: center;">
+      <div class="deck-info" style="margin-bottom: 20px; text-align: center;">
+        <h1 style="color: #1e293b;">
+          {{ deck.title }}
+        </h1>
+        <p id="counter" style="color: #64748b; font-weight: 600;">
+          Carte 1 sur {{ deck.flashcards.length }}
+        </p>
+      </div>
+
+      <div class="progress-container" style="width: 600px;">
+        <div id="progress-bar">
+        </div>
+      </div>
+
+      <div class="game-area">
+        <div
+          class="flip-container"
+          onclick="this.querySelector('.flip-inner').classList.toggle('is-flipped')"
+        >
+          <div class="flip-inner" id="current-card-inner">
+            <div class="card-front">
+              <span class="tag tag-question" style="margin-bottom: 20px;">Question</span>
+              <h2 id="display-question" style="font-size: 2.2rem;">
+              </h2>
+            </div>
+            <div class="card-back">
+              <span class="tag tag-answer" style="margin-bottom: 20px;">Réponse</span>
+              <h2 id="display-answer" style="font-size: 2.2rem; color: #16a34a;">
+              </h2>
+            </div>
+          </div>
+        </div>
+
+        <div class="controls">
+          <button class="btn-score btn-wrong" onclick="recordAnswer(false)">
+            <span>✖</span>Faux
+        </button>
+          <button class="btn-score btn-correct" onclick="recordAnswer(true)">
+            <span>✔</span>Juste
+        </button>
+        </div>
+      </div>
+    </div>
+
+    <div id="result-view" class="result-screen">
+      <h1 style="font-size: 2.5rem; color: #1e293b;">
+        Session terminée !
+      </h1>
+      <div class="score-circle">
+        <span id="final-score-value">0</span>
+        <span style="font-size: 1rem; font-weight: 400;">/ {{ deck.flashcards.length }}</span>
+      </div>
+      <p id="result-message" style="color: #64748b; font-size: 1.2rem; margin-bottom: 20px;">
+      </p>
+      <a
+        href="{{ route('decks.show', { deckId: deck.id }) }}"
+        class="btn-next"
+        style="text-decoration: none;"
+      >
+        Retour au deck
+    </a>
+    </div>
+  </div>
+
+  <script>
+    const cards = {{{ JSON.stringify(deck.flashcards) }}};
+
+    let currentIndex = 0;
+
+    let score = 0;
+
+    function updateCard() {
+      const card = cards[currentIndex];
+      const inner = document.getElementById("current-card-inner");
+      inner.classList.remove("is-flipped");
+      setTimeout(() => {
+        document.getElementById("display-question").innerText = card.question;
+        document.getElementById("display-answer").innerText = card.answer;
+        document.getElementById("counter").innerText = `Carte ${currentIndex + 1} sur ${cards.length}`;
+        const progress = (currentIndex + 1) / cards.length * 100;
+        document.getElementById("progress-bar").style.width = `${progress}%`;
+      }, 200);
+    }
+
+    function recordAnswer(isCorrect) {
+      if (isCorrect) score++;
+      if (currentIndex < cards.length - 1) {
+        currentIndex++;
+        updateCard();
+      } else {
+        showResults();
+      }
+    }
+
+    function showResults() {
+      document.getElementById("game-view").style.display = "none";
+      document.getElementById("result-view").style.display = "flex";
+      document.getElementById("final-score-value").innerText = score;
+      const percent = score / cards.length * 100;
+      let message = "";
+      if (percent === 100) message = "Tout Juste"; else if (percent >= 70) message = "Continue comme ça !"; else if (percent >= 50) message = "Encore un peut d'entrainement"; else message = "Continue de réviser !";
+      document.getElementById("result-message").innerText = message;
+    }
+
+    updateCard();
+  </script>
+@end

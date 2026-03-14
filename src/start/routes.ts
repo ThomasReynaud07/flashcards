@@ -32,3 +32,5 @@ router.post('/decks/:deckId/cards/:id', [FlashcardsController, 'update']).as('fl
 router
   .post('/decks/:deckId/cards/:id/delete', [FlashcardsController, 'destroy'])
   .as('flashcards.destroy')
+
+router.get('/decks/:id/play', [DecksController, 'play']).as('decks.play')

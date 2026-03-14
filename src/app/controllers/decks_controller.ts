@@ -38,5 +38,9 @@ export default class DecksController {
     const data = request.only(['title', 'description'])
     await deck?.merge(data).save()
     return response.redirect().toPath(`/decks/${params.deckId}`)
+
+  public async play({ params, view }: HttpContext) {
+    const deck = await Deck.query().where('id', params.deckId).preload('flashcards').firstOrFail()
+    return view.render('pages/decks/play', { deck })
   }
 }
