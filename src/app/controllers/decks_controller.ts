@@ -46,7 +46,8 @@ export default class DecksController {
   }
 
   public async play({ params, view }: HttpContext) {
-    const deck = await Deck.query().where('id', params.deckId).preload('flashcards').firstOrFail()
+    const id = params.deckId || params.id
+    const deck = await Deck.query().where('id', id).preload('flashcards').firstOrFail()
     return view.render('pages/decks/play', { deck })
   }
 }
